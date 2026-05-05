@@ -1,1 +1,4 @@
 database: hL3Anz5Z4Q3UZIOP
+Yarn dev
+yarn playwright codegen http://localhost:5173
+yarn playwright test --headed

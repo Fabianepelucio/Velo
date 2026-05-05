@@ -15,10 +15,11 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   //Act
   await page.getByTestId('search-order-id').fill(order);
   await page.getByTestId('search-order-button').click();
+  //await page. locator('//button[text()="Buscar Pedido"]'). click()
 
   //Assert
-  await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
+  await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10000});
   await expect(page.getByTestId('order-result-id')).toContainText(order);
-  await expect(page.getByTestId('order-result-status')).toBeVisible({timeout: 10_000})
+  await expect(page.getByTestId('order-result-status')).toBeVisible({timeout: 10000})
   await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
 });

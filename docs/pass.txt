@@ -3,3 +3,7 @@ Yarn dev
 yarn playwright codegen http://localhost:5173
 yarn playwright test --headed
 yarn playwright test --ui
+
+
+aula: Gerando massa de testes dinâmica com IA
+

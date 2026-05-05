@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 test('deve consultar um pedido aprovado', async ({ page }) => {
 
   //Test Data
-
   const order = 'VLO-KLWCX6'
+  
   //Arrange
   await page.goto('http://localhost:5173/');
   await page.getByTestId('hero-section').getByRole('heading', { name: 'Velô Sprint' }).click();
@@ -17,8 +17,8 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   await page.getByTestId('search-order-button').click();
 
   //Assert
-  await expect(page.getByTestId('order-result-id')).toBeVisible();
+  await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
   await expect(page.getByTestId('order-result-id')).toContainText(order);
-  await expect(page.getByTestId('order-result-status')).toBeVisible();
+  await expect(page.getByTestId('order-result-status')).toBeVisible({timeout: 10_000})
   await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
 });

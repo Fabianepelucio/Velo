@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-/// AAA - Arrenge - Act - Assert
+/// AAA - Arrange - Act - Assert
 test('deve consultar um pedido aprovado', async ({ page }) => {
   //Arrange
   await page.goto('http://localhost:5173/');

@@ -31,20 +31,67 @@ test.describe('Consulta de Pedido', () => {
   test('deve consultar um pedido aprovado', async ({ page }) => {
 
     //Test Data
-    const order = 'VLO-NXT8ZK'
+    //const order = 'VLO-NXT8ZK'
+
+    const order = {
+      number: 'VLO-NXT8ZK',
+      color: 'Glacier Blue',
+      wheels: 'aero Wheels',
+      customer: {
+        name: 'Fabiane de Lima Pelucio',
+        email: 'fabianepelucio@yahoo.com.br',
+      },
+      payment: 'À Vista',
+      status: 'APROVADO',
+    }
 
     //Act
-    await page.getByTestId('search-order-id').fill(order);
+    await page.getByTestId('search-order-id').fill(order.number);
     await page.getByTestId('search-order-button').click();
     //await page. locator('//button[text()="Buscar Pedido"]'). click()
 
     //Assert
-    await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10000});
-    await expect(page.getByTestId('order-result-id')).toContainText(order);
-    await expect(page.getByTestId('order-result-status')).toBeVisible({timeout: 10000})
-    await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
+  //   await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10000});
+  //   await expect(page.getByTestId('order-result-id')).toContainText(order);
+  //   await expect(page.getByTestId('order-result-status')).toBeVisible({timeout: 10000})
+  //   await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
+  // });
+  await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+    - img
+    - paragraph: Pedido
+    - paragraph: ${order.number}
+    - img
+    - text: ${order.status}
+ `);
+  await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+    - img
+    - paragraph: Pedido
+    - paragraph: ${order.number}
+    - img
+    - text:  ${order.status}
+    - img "Velô Sprint"
+    - paragraph: Modelo
+    - paragraph: Velô Sprint
+    - paragraph: Cor
+    - paragraph: ${order.color}
+    - paragraph: Interior
+    - paragraph: cream
+    - paragraph: Rodas
+    - paragraph: ${order.wheels}
+    - heading "Dados do Cliente" [level=4]
+    - paragraph: Nome
+    - paragraph: ${order.customer.name}
+    - paragraph: Email
+    - paragraph: ${order.customer.email}
+    - paragraph: Loja de Retirada
+    - paragraph
+    - paragraph: Data do Pedido
+    - paragraph: /\\d+\\/\\d+\\/\\d+/
+    - heading "Pagamento" [level=4]
+    - paragraph: ${order.payment}
+    - paragraph: /R\\$ [\\d.,]+/
+  `);
   });
-
   test('deve exibir mensagem quando o pedido não é encontrado', async ({ page }) => {
 
     //Test Data
@@ -70,6 +117,63 @@ test.describe('Consulta de Pedido', () => {
       - heading "Pedido não encontrado" [level=3]
       - paragraph: Verifique o número do pedido e tente novamente
     `);
+  });
+  test('deve consultar um pedido reprovado', async ({ page }) => {
+
+    //Test Data
+   //const order = 'VLO-9L7T54'
+    const order = {
+      number: 'VLO-9L7T54',
+      color: 'Midnight Black',
+      wheels: 'sport Wheels',
+      customer: {
+        name: 'Steve Jobs',
+        email: 'jobs@apple.com',
+      },
+      payment: 'À Vista',
+      status: 'REPROVADO',
+    }
+    //Act
+    await page.getByTestId('search-order-id').fill(order.number);
+    await page.getByTestId('search-order-button').click();
+    //await page. locator('//button[text()="Buscar Pedido"]'). click()
+
+    //Assert
+    await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+      - img
+      - paragraph: Pedido
+      - paragraph: ${order.number}
+      - img
+      - text: ${order.status}
+    `);
+    await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+    - img
+    - paragraph: Pedido
+    - paragraph: ${order.number}
+    - img
+    - text: ${order.status}
+    - img "Velô Sprint"
+    - paragraph: Modelo
+    - paragraph: Velô Sprint
+    - paragraph: Cor
+    - paragraph: ${order.color}
+    - paragraph: Interior
+    - paragraph: cream
+    - paragraph: Rodas
+    - paragraph: ${order.wheels}
+    - heading "Dados do Cliente" [level=4]
+    - paragraph: Nome
+    - paragraph: ${order.customer.name}
+    - paragraph: Email
+    - paragraph: ${order.customer.email}
+    - paragraph: Loja de Retirada
+    - paragraph
+    - paragraph: Data do Pedido
+    - paragraph: /\\d+\\/\\d+\\/\\d+/
+    - heading "Pagamento" [level=4]
+    - paragraph: ${order.payment}
+    - paragraph: /R\\$ [\\d.,]+/
+  `);
   });
 
 });

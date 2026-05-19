@@ -60,15 +60,17 @@ test.describe('Consulta de Pedido', () => {
     - img
     - paragraph: Pedido
     - paragraph: ${order.number}
-    - img
-    - text: ${order.status}
+    - status:
+      - img
+      - text: ${order.status}
  `);
   await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
     - img
     - paragraph: Pedido
     - paragraph: ${order.number}
-    - img
-    - text:  ${order.status}
+    - status:
+      - img
+      - text:  ${order.status}
     - img "Velô Sprint"
     - paragraph: Modelo
     - paragraph: Velô Sprint
@@ -91,6 +93,13 @@ test.describe('Consulta de Pedido', () => {
     - paragraph: ${order.payment}
     - paragraph: /R\\$ [\\d.,]+/
   `);
+  const statusBadge = page.getByRole('status').filter({hasText: order.status});
+    await expect(statusBadge).toHaveClass(/bg-green-100/);
+    await expect(statusBadge).toHaveClass(/text-green-700/);
+
+  const statusIcon = statusBadge.locator('svg') 
+    await expect(statusIcon).toHaveClass(/lucide-circle-check-big/);
+
   });
   test('deve exibir mensagem quando o pedido não é encontrado', async ({ page }) => {
 
@@ -143,15 +152,17 @@ test.describe('Consulta de Pedido', () => {
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
-      - img
-      - text: ${order.status}
+      - status:
+        - img
+        - text: ${order.status}
     `);
     await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
     - img
     - paragraph: Pedido
     - paragraph: ${order.number}
-    - img
-    - text: ${order.status}
+    - status:
+      - img
+      - text: ${order.status}
     - img "Velô Sprint"
     - paragraph: Modelo
     - paragraph: Velô Sprint
@@ -174,6 +185,77 @@ test.describe('Consulta de Pedido', () => {
     - paragraph: ${order.payment}
     - paragraph: /R\\$ [\\d.,]+/
   `);
-  });
+  const statusBadge = page.getByRole('status').filter({hasText: order.status});
+    await expect(statusBadge).toHaveClass(/bg-red-100/);
+    await expect(statusBadge).toHaveClass(/text-red-700/);
 
+  const statusIcon = statusBadge.locator('svg') 
+    await expect(statusIcon).toHaveClass(/lucide-circle-x/);
+
+  });
+  test('deve consultar um pedido em análise', async ({ page }) => {
+
+    //Test Data
+   //const order = 'VLO-9L7T54'
+    const order = {
+      number: 'VLO-WJ4DZ3',
+      color: 'Lunar White',
+      wheels: 'aero Wheels',
+      customer: {
+        name: 'João da Silva',
+        email: 'joao@velo.dev',
+      },
+      payment: 'À Vista',
+      status: 'EM_ANALISE',
+    }
+    //Act
+    await page.getByTestId('search-order-id').fill(order.number);
+    await page.getByTestId('search-order-button').click();
+    //await page. locator('//button[text()="Buscar Pedido"]'). click()
+
+    //Assert
+    await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+      - img
+      - paragraph: Pedido
+      - paragraph: ${order.number}
+      - status:
+        - img
+        - text: ${order.status}
+    `);
+    await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+    - img
+    - paragraph: Pedido
+    - paragraph: ${order.number}
+    - status:
+      - img
+      - text: ${order.status}
+    - img "Velô Sprint"
+    - paragraph: Modelo
+    - paragraph: Velô Sprint
+    - paragraph: Cor
+    - paragraph: ${order.color}
+    - paragraph: Interior
+    - paragraph: cream
+    - paragraph: Rodas
+    - paragraph: ${order.wheels}
+    - heading "Dados do Cliente" [level=4]
+    - paragraph: Nome
+    - paragraph: ${order.customer.name}
+    - paragraph: Email
+    - paragraph: ${order.customer.email}
+    - paragraph: Loja de Retirada
+    - paragraph
+    - paragraph: Data do Pedido
+    - paragraph: /\\d+\\/\\d+\\/\\d+/
+    - heading "Pagamento" [level=4]
+    - paragraph: ${order.payment}
+    - paragraph: /R\\$ [\\d.,]+/
+  `);
+  const statusBadge = page.getByRole('status').filter({hasText: order.status});
+    await expect(statusBadge).toHaveClass(/bg-amber-100/);
+    await expect(statusBadge).toHaveClass(/text-amber-700/);
+
+  const statusIcon = statusBadge.locator('svg') 
+    await expect(statusIcon).toHaveClass(/lucide-clock/);
+  });
 });

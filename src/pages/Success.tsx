@@ -113,7 +113,7 @@ const Success = () => {
         {/* Order Details */}
         <div className="grid md:grid-cols-2 gap-4 text-sm mb-8">
           <div>
-            <p className="text-muted-foreground">Número do Pedido</p>
+            <p className="text-muted-foreground">Código do Pedido</p>
             <p className="font-medium" data-testid="order-id">
               {order.id}
             </p>

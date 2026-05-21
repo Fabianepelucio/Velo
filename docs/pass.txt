@@ -7,3 +7,4 @@ yarn playwright test --ui
 
 aula: Gerando massa de testes dinâmica com IA
 
+/// AAA - Arrange - Act - Assert

@@ -8,7 +8,7 @@ await page. getByRole('link', { name: 'Consultar Pedido'}).click()
 await expect(page.getByRole('heading' )).toContainText('Consultar Pedido')
 
 // Act
-await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-NXT8ZK')
+await page.getByRole('textbox', { name: 'Código do Pedido' }).fill('VLO-NXT8ZK')
 await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
 // Assert
